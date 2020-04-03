@@ -20,20 +20,32 @@ When calling the wrapper function multiple times, only the last returned
 `Promise` will resolve or reject and all other `Promise`s will be aborted with
 `DiscardSignal` error.
 
+In the following example, fetch requests for `/buddy` and `/allie` will be
+discarded (they will return `undefined`), and only `/becky` will be resolved.
+
 ```js
 import onlyLastPromise, { DiscardSignal } from 'only-last-promise';
 
 const wrapper = onlyLastPromise();
 
-async function main() {
+const wrappedFetch = async (url) => {
 	try {
-		return await wrapper(fetch('/becky'));
+		return await wrapper(fetch(url));
 	} catch (error) {
 		if (!(error instanceof DiscardSignal)) {
 			throw error;
 		}
 	}
-}
+};
+
+(async () => {
+	await Promise.all([
+		wrappedFetch('/buddy'),
+		wrappedFetch('/allie'),
+		wrappedFetch('/becky')
+	]);
+	// => [undefined, undefined, '/becky']
+})();
 ```
 
 ## API
