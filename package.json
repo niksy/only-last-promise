@@ -1,6 +1,6 @@
 {
   "name": "only-last-promise",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Resolve or reject only last Promise.",
   "main": "index.cjs.js",
   "module": "index.esm.js",
