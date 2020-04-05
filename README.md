@@ -20,8 +20,11 @@ When calling the wrapper function multiple times, only the last returned
 `Promise` will resolve or reject and all other `Promise`s will be aborted with
 `DiscardSignal` error.
 
-In the following example, fetch requests for `/buddy` and `/allie` will be
-discarded (they will return `undefined`), and only `/becky` will be resolved.
+In the following example,
+[fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
+requests for `/buddy` and `/allie` will be discarded (they will return
+`undefined`), and only `/becky` will be resolved with
+[`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response).
 
 ```js
 import onlyLastPromise, { DiscardSignal } from 'only-last-promise';
@@ -44,7 +47,7 @@ const wrappedFetch = async (url) => {
 		wrappedFetch('/allie'),
 		wrappedFetch('/becky')
 	]);
-	// => [undefined, undefined, '/becky']
+	// => [undefined, undefined, Response]
 })();
 ```
 
@@ -68,7 +71,7 @@ Type: `Promise`
 
 ## Browser support
 
-Tested in IE9+ and all modern browsers.
+Tested in IE9+ and all modern browsers, assuming `Promise` is available.
 
 ## Test
 
